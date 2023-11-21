@@ -22,6 +22,8 @@ set(CXXFLAGS "${CXXFLAGS} ${OPTIM}")
 add_definitions(-DBOOST_BIND_GLOBAL_PLACEHOLDERS)
 set(TGBOT_DISABLE_NAGLES_ALGORITHM ON)
 add_subdirectory(tgbot-cpp)
+add_subdirectory(SQLiteCpp)
+add_subdirectory(SingletonLogger)
 
 set(CPPSRC
   wakabot.cc
