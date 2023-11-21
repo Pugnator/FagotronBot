@@ -1,0 +1,9 @@
+[submodule "tgbot-cpp"]
+	path = tgbot-cpp
+	url = https://github.com/reo7sp/tgbot-cpp.git
+[submodule "SingletonLogger"]
+	path = SingletonLogger
+	url = https://github.com/Pugnator/SingletonLogger.git
+[submodule "SQLiteCpp"]
+	path = SQLiteCpp
+	url = https://github.com/SRombauts/SQLiteCpp.git
