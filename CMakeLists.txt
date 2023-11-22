@@ -1,6 +1,12 @@
 cmake_minimum_required(VERSION 3.21)
 
-project(wakaBOT LANGUAGES C CXX)
+project(FagotronBot LANGUAGES C CXX)
+
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/bin)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/bin)
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib)
+
+SET(CMAKE_USE_RELATIVE_PATHS ON)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -23,20 +29,17 @@ add_definitions(-DBOOST_BIND_GLOBAL_PLACEHOLDERS)
 set(TGBOT_DISABLE_NAGLES_ALGORITHM ON)
 add_subdirectory(tgbot-cpp)
 add_subdirectory(SQLiteCpp)
-add_subdirectory(SingletonLogger)
+add_subdirectory(TinyLog)
 
 set(CPPSRC
-  wakabot.cc
-  botcommander.cc
-  callback.cc
+  fagotron.cc
+  play.cc
   commands.cc
-  commands/command_global.cc
-  commands/command_quiz.cc
-  commands/command_search.cc
-  commands/command_explain.cc
-  eventsmanager.cc
-  usermanager.cc
+  db.cc
 )
 
-add_executable(wakaBOT ${CPPSRC})
-set_target_properties(wakaBOT PROPERTIES OUTPUT_NAME "wakabot")
+add_executable(FagotronBot ${CPPSRC})
+set_target_properties(FagotronBot PROPERTIES OUTPUT_NAME "fagotron")
+
+target_include_directories(FagotronBot PUBLIC TinyLog)
+target_link_libraries(FagotronBot PUBLIC TgBot ${OPENSSL_LIBRARIES} ${Boost_LIBRARIES} ${CURL_LIBRARIES} tinyLog SQLiteCpp)

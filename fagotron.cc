@@ -16,29 +16,43 @@ int main()
 {
   TgBot::Bot bot(getenv("FAGOTRON_TOKEN"));
   Log::get().configure(TraceType::file).set_level(TraceSeverity::debug);
-  LOG_INFO("Bot {} started\n", bot.getApi().getMe()->username);  
+  LOG_INFO("Bot {} started\n", bot.getApi().getMe()->username);
 
-  // Set commands
-  std::vector<TgBot::BotCommand::Ptr> commands;  
+  std::vector<TgBot::BotCommand::Ptr> commands;
+  TgBot::BotCommand::Ptr cmdArray(new TgBot::BotCommand);
   cmdArray->command = "play";
-  cmdArray->description = U"Кто сегодня герой?";
+  cmdArray->description = "Who's the boss of the Gym?";
   commands.push_back(cmdArray);
-  bot.getApi().setMyCommands(commands); 
+  cmdArray = std::make_shared<TgBot::BotCommand>();
+  cmdArray->command = "register";
+  cmdArray->description = "Register yourself as a Gym member.";
+  cmdArray = std::make_shared<TgBot::BotCommand>();
+  commands.push_back(cmdArray);
+  cmdArray->command = "unregister";
+  cmdArray->description = "Leave the Gym.";
+  commands.push_back(cmdArray);
+  bot.getApi().setMyCommands(commands);
+
+  bot.getEvents().onUnknownCommand([&bot](TgBot::Message::Ptr message)
+                                   { Bot::processCommands(bot, message); });
+
+  bot.getEvents().onNonCommandMessage([](TgBot::Message::Ptr message) {});
+
+  bot.getEvents().onCallbackQuery([](TgBot::CallbackQuery::Ptr query) {});
 
   signal(SIGINT, handleSignal);
-
-  bot.getApi().deleteWebhook();
-  TgBot::TgLongPoll longPoll(bot, 20, 5);
-  int lastUpdateId = 0;
-  while (!sigintReceived)
+  try
   {
-    try
+    bot.getApi().deleteWebhook();
+    TgBot::TgLongPoll longPoll(bot, 20, 5);
+    int lastUpdateId = 0;
+    while (!sigintReceived)
     {
       longPoll.start();
     }
-    catch (TgBot::TgException &e)
-    {
-      LOG_EXCEPTION("Runtime error", e);
-    }
+  }
+  catch (TgBot::TgException &e)
+  {
+    LOG_EXCEPTION("Runtime error", e);
   }
 }
