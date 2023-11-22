@@ -97,4 +97,39 @@ namespace Bot
     }
     return {};
   }
+
+  bool UserManager::addWin(int64_t username)
+  {
+    try
+    {
+      SQLite::Statement query(*db, "UPDATE User SET WinnerCount = WinnerCount + 1 WHERE ID = ?");
+      query.bind(1, username);
+      query.exec();
+      return true;
+    }
+    catch (const SQLite::Exception &e)
+    {
+      LOG_EXCEPTION("SQlite exception", e);
+    }
+    return false;
+  }
+
+  bool UserManager::getWinCount(int64_t username, int64_t &count)
+  {
+    try
+    {
+      SQLite::Statement query(*db, "SELECT WinnerCount FROM User WHERE ID = ?");
+      query.bind(1, username);
+      if (query.executeStep())
+      {
+        count = query.getColumn(0).getInt64();
+        return true;
+      }
+    }
+    catch (const SQLite::Exception &e)
+    {
+      LOG_EXCEPTION("SQlite exception", e);
+    }
+    return false;
+  }
 }

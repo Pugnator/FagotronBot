@@ -28,8 +28,8 @@ namespace Bot
     int winner = intDist(gen);
     TgBot::Chat::Ptr chat = bot.getApi().getChat(fags[winner]);
     auto result = std::format("And the winner is ... [{}](tg://user?id={})", chat->username, fags[winner]);
-
     bot.getApi().sendMessage(groupID, result, false, 0, std::make_shared<TgBot::GenericReply>(), "Markdown");
+    userManager.addWin(fags[winner]);
 
     LOG_DEBUG("The winner is {}\n", winner);
   }
