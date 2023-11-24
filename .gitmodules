@@ -7,3 +7,6 @@
 [submodule "TinyLog"]
 	path = TinyLog
 	url = https://github.com/Pugnator/TinyLog.git
+[submodule "yaml-cpp"]
+	path = yaml-cpp
+	url = https://github.com/jbeder/yaml-cpp.git
