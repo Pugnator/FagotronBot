@@ -7,6 +7,8 @@ namespace Bot
   void playGameOfFagAsync(TgBot::Bot &bot, int64_t userID);
   void playGameOfFag(TgBot::Bot &bot, int64_t userID);
   void processCommands(TgBot::Bot &bot, TgBot::Message::Ptr message);
+  void sentTextMessage(TgBot::Bot &bot, int64_t chatID, const std::string &message);
+  void sendSticker(TgBot::Bot &bot, int64_t chatID, const std::string &stickerID);
   class UserManager
   {
   public:
@@ -22,7 +24,7 @@ namespace Bot
     bool userExists(int64_t username);
     bool addWin(int64_t username);
     bool getWinCount(int64_t username, int64_t &count);
-    
+
     std::vector<int64_t> getRegisteredGroupUsers(int64_t groupID);
 
   private:

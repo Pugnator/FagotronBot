@@ -14,7 +14,19 @@ void handleSignal(int s)
 
 int main()
 {
-  TgBot::Bot bot(getenv("FAGOTRON_TOKEN"));
+
+#if defined(FAGOTRON_TOKEN)
+  TgBot::Bot bot(FAGOTRON_TOKEN);
+#else
+  const char *token = getenv("FAGOTRON_TOKEN");
+  if (!token)
+  {
+    LOG_DEBUG("FAGOTRON_TOKEN is not set, exiting\n");
+    return 1;
+  }
+  TgBot::Bot bot(token);
+#endif
+
   Log::get().configure(TraceType::file).set_level(TraceSeverity::debug);
   LOG_INFO("Bot {} started\n", bot.getApi().getMe()->username);
 
@@ -26,6 +38,7 @@ int main()
   cmdArray = std::make_shared<TgBot::BotCommand>();
   cmdArray->command = "register";
   cmdArray->description = "Register yourself as a Gym member.";
+  commands.push_back(cmdArray);
   cmdArray = std::make_shared<TgBot::BotCommand>();
   commands.push_back(cmdArray);
   cmdArray->command = "unregister";

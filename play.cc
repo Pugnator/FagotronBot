@@ -3,7 +3,7 @@
 #include <random>
 #include <future>
 #include <thread>
-
+#include "corpus.hpp"
 namespace Bot
 {
   void playGameOfFag(TgBot::Bot &bot, int64_t groupID)
@@ -27,8 +27,11 @@ namespace Bot
     std::uniform_int_distribution<> intDist(0, fags.size() - 1);
     int winner = intDist(gen);
     TgBot::Chat::Ptr chat = bot.getApi().getChat(fags[winner]);
-    auto result = std::format("And the winner is ... [{}](tg://user?id={})", chat->username, fags[winner]);
-    bot.getApi().sendMessage(groupID, result, false, 0, std::make_shared<TgBot::GenericReply>(), "Markdown");
+    auto congratulations = Corpus::CorpusManager::get().getRandomEntry(Corpus::EntryType::Congratulations);
+    sentTextMessage(bot, groupID, congratulations);
+    auto insult = Corpus::CorpusManager::get().getRandomEntry(Corpus::EntryType::Insults);
+    auto result = std::format("{} [{}](tg://user?id={})", insult, chat->username, fags[winner]);
+    sentTextMessage(bot, groupID, result);
     userManager.addWin(fags[winner]);
 
     LOG_DEBUG("The winner is {}\n", winner);

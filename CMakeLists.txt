@@ -22,6 +22,10 @@ else()
     add_definitions(-DWAKA_RELEASE)
 endif()
 
+file(STRINGS "token.txt" TOKEN_CONTENT)
+add_definitions(-DFAGOTRON_TOKEN="${TOKEN_CONTENT}")
+set(BasicCorpusFile ${CMAKE_CURRENT_SOURCE_DIR}/corpus.yml)
+
 set(CFLAGS "${CFLAGS} ${OPTIM}")
 set(CXXFLAGS "${CXXFLAGS} ${OPTIM}")
 
@@ -30,16 +34,32 @@ set(TGBOT_DISABLE_NAGLES_ALGORITHM ON)
 add_subdirectory(tgbot-cpp)
 add_subdirectory(SQLiteCpp)
 add_subdirectory(TinyLog)
+set(YAML_BUILD_SHARED_LIBS OFF)
+set(YAML_CPP_BUILD_TESTS=OFF)
+set(YAML_CPP_BUILD_TOOLS=OFF)
+set(YAML_CPP_BUILD_CONTRIB=OFF)
+add_subdirectory(yaml-cpp)
 
 set(CPPSRC
   fagotron.cc
   play.cc
   commands.cc
   db.cc
+  send.cc
+  corpus.cc
+)
+
+add_custom_target(BasicCorpus ALL DEPENDS ${BasicCorpusFile})
+get_filename_component(BasicCorpusFileName ${BasicCorpusFile} NAME_WE)
+add_custom_command(TARGET BasicCorpus       
+        COMMENT "Copying settings file ${BasicCorpusFile}"
+        COMMAND ${CMAKE_COMMAND} -E copy ${BasicCorpusFile} "${CMAKE_BINARY_DIR}/${BasicCorpusFileName}.yml"
 )
 
 add_executable(FagotronBot ${CPPSRC})
+add_dependencies(FagotronBot BasicCorpus)
 set_target_properties(FagotronBot PROPERTIES OUTPUT_NAME "fagotron")
 
-target_include_directories(FagotronBot PUBLIC TinyLog)
-target_link_libraries(FagotronBot PUBLIC TgBot ${OPENSSL_LIBRARIES} ${Boost_LIBRARIES} ${CURL_LIBRARIES} tinyLog SQLiteCpp)
+target_include_directories(FagotronBot PUBLIC TinyLog yaml-cpp/include)
+
+target_link_libraries(FagotronBot PUBLIC TgBot ${OPENSSL_LIBRARIES} ${Boost_LIBRARIES} ${CURL_LIBRARIES} tinyLog SQLiteCpp yaml-cpp)
