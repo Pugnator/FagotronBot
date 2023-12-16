@@ -23,7 +23,7 @@ namespace Corpus
       if (!fout.is_open())
       {
         LOG_DEBUG("Failed to open settings file for writing.\n");
-        return;
+        throw std::runtime_error("Failed to open the insult corpus");
       }
       fout << defaultConfig << std::flush;
       fout.close();
@@ -39,7 +39,7 @@ namespace Corpus
         {EntryType::Announces, "Announces"},
         {EntryType::Gifs, "Gifs"},
         {EntryType::Wisdom, "Wisdom"},
-        };
+    };
 
     auto it = typeToString.find(type);
     if (it != typeToString.end())
@@ -51,9 +51,9 @@ namespace Corpus
   }
 
   std::vector<std::string> CorpusManager::getEntries(EntryType type)
-  {    
+  {
     auto typeName = entryTypeToString(type);
-    if(typeName.empty())
+    if (typeName.empty())
     {
       return std::vector<std::string>();
     }
@@ -70,12 +70,12 @@ namespace Corpus
   std::string CorpusManager::getRandomEntry(EntryType type)
   {
     auto typeName = entryTypeToString(type);
-    if(typeName.empty())
+    if (typeName.empty())
     {
       return std::string();
     }
     auto sen = getEntries(type);
-    if(sen.empty())
+    if (sen.empty())
     {
       return std::string();
     }

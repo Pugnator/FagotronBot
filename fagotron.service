@@ -1,0 +1,17 @@
+[Unit]
+Description=Telegram Fagotron
+After=syslog.target
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=5
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=fagotron
+WorkingDirectory=/opt/fagotron/
+Environment=LD_LIBRARY_PATH=/opt/fagotron
+ExecStart=/opt/fagotron/fagotron
+
+[Install]
+WantedBy=multi-user.target

@@ -23,7 +23,7 @@ else()
 endif()
 
 file(STRINGS "token.txt" TOKEN_CONTENT)
-add_definitions(-DFAGOTRON_TOKEN="${TOKEN_CONTENT}")
+add_definitions(-DWAKABOT_TOKEN="${TOKEN_CONTENT}")
 set(BasicCorpusFile ${CMAKE_CURRENT_SOURCE_DIR}/corpus.yml)
 
 set(CFLAGS "${CFLAGS} ${OPTIM}")
