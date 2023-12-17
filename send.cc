@@ -1,4 +1,3 @@
-
 #include "fagotron.hpp"
 #include "log.hpp"
 
