@@ -9,25 +9,15 @@ INCTXT(BasicCorpus, "corpus.yml");
 namespace Corpus
 {
   CorpusManager::CorpusManager()
-  {
-    const std::string corpusFile = "corpus.yml";
+  {    
     try
     {
-      corpus_ = YAML::LoadFile(corpusFile);
+      corpus_ = YAML::Load(corpus_BasicCorpusData);
     }
     catch (const YAML::Exception &e)
     {
-      LOG_DEBUG("Error loading corpus.yml: {}, recreating\n", e.what());
-      auto defaultConfig = YAML::Load(corpus_BasicCorpusData);
-      std::ofstream fout(corpusFile);
-      if (!fout.is_open())
-      {
-        LOG_DEBUG("Failed to open settings file for writing.\n");
-        throw std::runtime_error("Failed to open the insult corpus");
-      }
-      fout << defaultConfig << std::flush;
-      fout.close();
-      corpus_ = defaultConfig;
+      LOG_DEBUG("Error loading corpus:\n", e.what());
+      throw e;
     }
   }
 
