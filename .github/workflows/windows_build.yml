@@ -55,7 +55,9 @@ jobs:
       run: |
         echo "/ucrt64/bin" >> $GITHUB_PATH
         echo "/usr/bin" >> $GITHUB_PATH
-        cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Debug
+        cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Debug \
+        -DBoost_INCLUDE_DIR=${{steps.install-boost.outputs.BOOST_ROOT}}/include \
+        -DBoost_LIBRARY_DIRS=${{steps.install-boost.outputs.BOOST_ROOT}}/lib
         cmake --build build
       
       env:
