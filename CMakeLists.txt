@@ -67,4 +67,8 @@ set_target_properties(FagotronBot PROPERTIES OUTPUT_NAME "fagotron")
 
 target_include_directories(FagotronBot PUBLIC TinyLog yaml-cpp/include)
 
-target_link_libraries(FagotronBot PUBLIC TgBot ${OPENSSL_LIBRARIES} ${Boost_LIBRARIES} ${CURL_LIBRARIES} tinyLog SQLiteCpp yaml-cpp)
+if(MINGW)
+  target_link_libraries(FagotronBot PUBLIC SQLiteCpp TgBot ${OPENSSL_LIBRARIES} ${Boost_LIBRARIES} ${CURL_LIBRARIES} tinyLog yaml-cpp ws2_32)
+else()
+  target_link_libraries(FagotronBot PUBLIC SQLiteCpp TgBot ${OPENSSL_LIBRARIES} ${Boost_LIBRARIES} ${CURL_LIBRARIES} tinyLog yaml-cpp)
+endif()

@@ -1,3 +1,11 @@
 /token.txt
 /build
+/bin
+/lib
 /.vscode
+CMakeCache.txt
+CMakeFiles/
+build.ninja
+cmake_install.cmake
+lib/
+win_man.txt
