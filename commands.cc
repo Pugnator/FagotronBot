@@ -16,7 +16,7 @@ namespace Bot
     {
 
       Bot::UserManager userManager(bot);
-      if (userManager.userExists(userID))
+      if (userManager.userExists(userID, groupID))
       {
         LOG_DEBUG("User {} is already a well-known fag.\n", userID);
         bot.getApi().sendMessage(groupID, "You are already a well-known fag.");
@@ -38,7 +38,7 @@ namespace Bot
     else if (message->text == "/unregister@FagotronBot")
     {
       Bot::UserManager userManager(bot);
-      if (userManager.removeUserEntry(userID))
+      if (userManager.removeUserEntry(userID, groupID))
       {
         bot.getApi().sendMessage(groupID, "You're removed from the Gym, fag.");
       }

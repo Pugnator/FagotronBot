@@ -20,10 +20,10 @@ namespace Bot
     UserManager &operator=(const UserManager &) = delete;
 
     bool createUserEntry(int64_t username, int64_t group);
-    bool removeUserEntry(int64_t username);
-    bool userExists(int64_t username);
-    bool addWin(int64_t username);
-    bool getWinCount(int64_t username, int64_t &count);
+    bool removeUserEntry(int64_t username, int64_t group);
+    bool userExists(int64_t username, int64_t group);
+    bool addWin(int64_t username, int64_t group);
+    bool getWinCount(int64_t username, int64_t group, int64_t &count);
 
     std::vector<int64_t> getRegisteredGroupUsers(int64_t groupID);
 

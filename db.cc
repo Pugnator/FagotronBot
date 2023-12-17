@@ -47,12 +47,13 @@ namespace Bot
     return false;
   }
 
-  bool UserManager::removeUserEntry(int64_t username)
+  bool UserManager::removeUserEntry(int64_t username, int64_t group)
   {
     try
     {
-      SQLite::Statement query(*db, "DELETE FROM User WHERE ID = ?");
+      SQLite::Statement query(*db, "DELETE FROM User WHERE ID = ? AND GroupID = ?;");
       query.bind(1, username);
+      query.bind(2, group);
       query.exec();
       return true;
     }
@@ -63,12 +64,13 @@ namespace Bot
     return false;
   }
 
-  bool UserManager::userExists(int64_t username)
+  bool UserManager::userExists(int64_t username, int64_t group)
   {
     try
     {
-      SQLite::Statement query(*db, "SELECT ID FROM User WHERE ID = ?");
+      SQLite::Statement query(*db, "SELECT ID FROM User WHERE ID = ? AND GroupID = ?");
       query.bind(1, username);
+      query.bind(2, group);
       return query.executeStep();
     }
     catch (const SQLite::Exception &e)
@@ -98,12 +100,13 @@ namespace Bot
     return {};
   }
 
-  bool UserManager::addWin(int64_t username)
+  bool UserManager::addWin(int64_t username, int64_t group)
   {
     try
     {
-      SQLite::Statement query(*db, "UPDATE User SET WinnerCount = WinnerCount + 1 WHERE ID = ?");
+      SQLite::Statement query(*db, "UPDATE User SET WinnerCount = WinnerCount + 1 WHERE ID = ? AND GroupID = ?;");
       query.bind(1, username);
+      query.bind(2, group);
       query.exec();
       return true;
     }
@@ -114,12 +117,13 @@ namespace Bot
     return false;
   }
 
-  bool UserManager::getWinCount(int64_t username, int64_t &count)
+  bool UserManager::getWinCount(int64_t username, int64_t group, int64_t &count)
   {
     try
     {
-      SQLite::Statement query(*db, "SELECT WinnerCount FROM User WHERE ID = ?");
+      SQLite::Statement query(*db, "SELECT WinnerCount FROM User WHERE ID = ? AND GroupID = ?");
       query.bind(1, username);
+      query.bind(2, group);
       if (query.executeStep())
       {
         count = query.getColumn(0).getInt64();

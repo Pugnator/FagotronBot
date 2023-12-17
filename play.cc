@@ -35,7 +35,7 @@ namespace Bot
     std::string announceText = std::vformat(announce, std::make_format_args(chat->username));
     sentTextMessage(bot, groupID, announceText);
     sentTextMessage(bot, groupID, result);
-    userManager.addWin(fags[winner]);
+    userManager.addWin(fags[winner], groupID);
 
     LOG_DEBUG("The winner is {}\n", winner);
   }
