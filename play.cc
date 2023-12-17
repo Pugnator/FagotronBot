@@ -27,10 +27,13 @@ namespace Bot
     std::uniform_int_distribution<> intDist(0, fags.size() - 1);
     int winner = intDist(gen);
     TgBot::Chat::Ptr chat = bot.getApi().getChat(fags[winner]);
-    auto congratulations = Corpus::CorpusManager::get().getRandomEntry(Corpus::EntryType::Congratulations);
+    std::string congratulations = Corpus::CorpusManager::get().getRandomEntry(Corpus::EntryType::Congratulations);
     sentTextMessage(bot, groupID, congratulations);
-    auto insult = Corpus::CorpusManager::get().getRandomEntry(Corpus::EntryType::Insults);
-    auto result = std::format("{} [{}](tg://user?id={})", insult, chat->username, fags[winner]);
+    std::string insult = Corpus::CorpusManager::get().getRandomEntry(Corpus::EntryType::Insults);
+    std::string announce = Corpus::CorpusManager::get().getRandomEntry(Corpus::EntryType::Announces);
+    std::string result = std::format("{}, [{}](tg://user?id={})", insult, chat->username, fags[winner]);
+    std::string announceText = std::vformat(announce, std::make_format_args(chat->username));
+    sentTextMessage(bot, groupID, announceText);
     sentTextMessage(bot, groupID, result);
     userManager.addWin(fags[winner]);
 
