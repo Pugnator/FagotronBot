@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
 
   pull_request:
-    types: [opened, reopened]
+    types: [opened, reopened, edited]
     branches:
       - 'main'    
 
@@ -17,7 +17,7 @@ jobs:
   Windows-build:
     name: Build on Windows 2019
     runs-on: windows-2019
-    
+
     defaults:
       run:
         shell: msys2 {0}
@@ -27,29 +27,18 @@ jobs:
       with:
         fetch-depth: 1
         submodules: 'recursive'
-    
-    
+
     - uses: msys2/setup-msys2@v2
       with:
         release: true
         msystem: UCRT64
         update: true
-        install: make mingw-w64-ucrt-x86_64-cmake mingw-w64-ucrt-x86_64-ninja mingw-w64-ucrt-x86_64-openssl
-    
-    - name: Download GCC 13
-      run: |
-        curl -LO https://mirror.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-gcc-13.2.0-3-any.pkg.tar.zst        
-  
-    - name: Install GCC 13
-      run: |
-        pacman -Syu --noconfirm
-        pacman -U mingw-w64-ucrt-x86_64-gcc-13.2.0-3-any.pkg.tar.zst --noconfirm
-        pacman -S mingw-w64-ucrt-x86_64-boost --noconfirm    
+        install: make mingw-w64-ucrt-x86_64-cmake mingw-w64-ucrt-x86_64-ninja mingw-w64-ucrt-x86_64-openssl mingw-w64-ucrt-x86_64-gcc mingw-w64-ucrt-x86_64-boost
 
     - name: Cmake configure and build
       run: |
         echo "/ucrt64/bin" >> $GITHUB_PATH
         echo "/usr/bin" >> $GITHUB_PATH
         cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Debug
-        cmake --build build     
+        cmake --build build
   
