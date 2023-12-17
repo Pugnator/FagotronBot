@@ -1,0 +1,46 @@
+name: Linux CI
+
+concurrency:
+  # for PR's cancel the running task, if another commit is pushed
+  group: ${{ github.workflow }} ${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+on:
+  release:
+    types: [created]
+  
+  pull_request:
+    types: [opened, reopened]
+    branches:
+      - 'master'    
+  
+  workflow_dispatch:    
+
+jobs:
+  Linux-build:
+    name: Build on Ubuntu
+    runs-on: ubuntu-latest
+    
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 1
+        submodules: 'recursive'    
+    
+      
+    - name: Install Build Environment
+      run: |
+        sudo apt-get update
+        sudo apt install gcc-13 g++-13 ninja-build libboost-system-dev libssl-dev zlib1g-dev libcurl4-openssl-dev
+        sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 100 --slave /usr/bin/g++ g++ /usr/bin/g++-13 --slave /usr/bin/gcov gcov /usr/bin/gcov-13
+        sudo update-alternatives --set gcc /usr/bin/gcc-13
+
+    - name: Cmake configure and build
+      run: |
+        cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
+        cmake --build build
+    
