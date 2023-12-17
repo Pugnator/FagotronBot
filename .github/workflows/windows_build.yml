@@ -11,7 +11,7 @@ on:
   pull_request:
     types: [opened, reopened]
     branches:
-      - 'master'    
+      - 'main'    
 
 jobs:
   Windows-build:
