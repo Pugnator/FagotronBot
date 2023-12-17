@@ -22,7 +22,7 @@ namespace Bot
               SQLite::OPEN_CREATE |
               SQLite::OPEN_FULLMUTEX);
       db->exec(SQL_OPTIONS);
-      db->exec("CREATE TABLE IF NOT EXISTS User (ID INTEGER PRIMARY KEY, GroupID INTEGER, WinnerCount INTEGER);");
+      db->exec("CREATE TABLE IF NOT EXISTS User (ID INTEGER PRIMARY KEY AUTOINCREMENT, UserID INTEGER, GroupID INTEGER, WinnerCount INTEGER);");
     }
     catch (const SQLite::Exception &e)
     {
@@ -34,7 +34,7 @@ namespace Bot
   {
     try
     {
-      SQLite::Statement query(*db, "INSERT INTO User (ID, GroupID, WinnerCount) VALUES (?,?,0)");
+      SQLite::Statement query(*db, "INSERT INTO User (UserID, GroupID) VALUES (?,?);");
       query.bind(1, username);
       query.bind(2, group);
       query.exec();
@@ -51,7 +51,7 @@ namespace Bot
   {
     try
     {
-      SQLite::Statement query(*db, "DELETE FROM User WHERE ID = ? AND GroupID = ?;");
+      SQLite::Statement query(*db, "DELETE FROM User WHERE UserID = ? AND GroupID = ?;");
       query.bind(1, username);
       query.bind(2, group);
       query.exec();
@@ -68,7 +68,7 @@ namespace Bot
   {
     try
     {
-      SQLite::Statement query(*db, "SELECT ID FROM User WHERE ID = ? AND GroupID = ?");
+      SQLite::Statement query(*db, "SELECT ID FROM User WHERE UserID = ? AND GroupID = ?");
       query.bind(1, username);
       query.bind(2, group);
       return query.executeStep();
@@ -84,7 +84,7 @@ namespace Bot
   {
     try
     {
-      SQLite::Statement query(*db, "SELECT ID FROM User WHERE GroupID = ?");
+      SQLite::Statement query(*db, "SELECT UserID FROM User WHERE GroupID = ?");
       query.bind(1, groupID);
       std::vector<int64_t> users;
       while (query.executeStep())
@@ -104,7 +104,7 @@ namespace Bot
   {
     try
     {
-      SQLite::Statement query(*db, "UPDATE User SET WinnerCount = WinnerCount + 1 WHERE ID = ? AND GroupID = ?;");
+      SQLite::Statement query(*db, "UPDATE User SET WinnerCount = WinnerCount + 1 WHERE UserID = ? AND GroupID = ?;");
       query.bind(1, username);
       query.bind(2, group);
       query.exec();
@@ -121,7 +121,7 @@ namespace Bot
   {
     try
     {
-      SQLite::Statement query(*db, "SELECT WinnerCount FROM User WHERE ID = ? AND GroupID = ?");
+      SQLite::Statement query(*db, "SELECT WinnerCount FROM User WHERE UserID = ? AND GroupID = ?");
       query.bind(1, username);
       query.bind(2, group);
       if (query.executeStep())
