@@ -44,6 +44,7 @@ jobs:
       run: |
         pacman -Syu --noconfirm
         pacman -U mingw-w64-ucrt-x86_64-gcc-13.2.0-3-any.pkg.tar.zst --noconfirm
+        pacman -S mingw-w64-ucrt-x86_64-boost --noconfirm
 
     - name: Install boost
       uses: MarkusJx/install-boost@v2.4.4
