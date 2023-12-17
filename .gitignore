@@ -8,4 +8,6 @@ CMakeFiles/
 build.ninja
 cmake_install.cmake
 lib/
-win_man.txt
+.ninja_deps
+.ninja_log
+*.diff
