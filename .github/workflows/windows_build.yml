@@ -44,24 +44,12 @@ jobs:
       run: |
         pacman -Syu --noconfirm
         pacman -U mingw-w64-ucrt-x86_64-gcc-13.2.0-3-any.pkg.tar.zst --noconfirm
-        pacman -S mingw-w64-ucrt-x86_64-boost --noconfirm
-
-    - name: Install boost
-      uses: MarkusJx/install-boost@v2.4.4
-      id: install-boost
-      with:          
-          boost_version: 1.73.0
-          platform_version: 2019
+        pacman -S mingw-w64-ucrt-x86_64-boost --noconfirm    
 
     - name: Cmake configure and build
       run: |
         echo "/ucrt64/bin" >> $GITHUB_PATH
         echo "/usr/bin" >> $GITHUB_PATH
-        cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Debug \
-        -DBoost_INCLUDE_DIR=${{steps.install-boost.outputs.BOOST_ROOT}}/include \
-        -DBoost_LIBRARY_DIRS=${{steps.install-boost.outputs.BOOST_ROOT}}/lib
-        cmake --build build
-      
-      env:
-        BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
+        cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Debug
+        cmake --build build     
   
