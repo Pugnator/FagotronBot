@@ -19,7 +19,7 @@ pacman -S mingw-w64-x86_64-boost
 
 - Clone repo:
 ```
-$ git clone git@github.com:<USER_NAME>/FagotronBot.git FagotronBot
+$ git clone git@github.com:Pugnator/FagotronBot.git FagotronBot
 ```
 - Recursive update submodules
 ```$ cd FagotronBot/
