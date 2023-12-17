@@ -34,7 +34,7 @@ jobs:
         release: true
         msystem: UCRT64
         update: true
-        install: make mingw-w64-ucrt-x86_64-cmake mingw-w64-ucrt-x86_64-ninja
+        install: make mingw-w64-ucrt-x86_64-cmake mingw-w64-ucrt-x86_64-ninja mingw-w64-ucrt-x86_64-openssl
     
     - name: Download GCC 13
       run: |
