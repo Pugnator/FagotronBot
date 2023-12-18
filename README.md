@@ -12,7 +12,6 @@ A simple text based rulette bot for a Telegram chats.
  - Install next packages
 ```
 pacman -S mingw-w64-x86_64-gcc
-pacman -S mingw-w64-x86_64-gdb
 pacman -S mingw-w64-x86_64-cmake
 pacman -S mingw-w64-x86_64-boost
 ```
