@@ -59,7 +59,7 @@ namespace
     LOG_DEBUG("Unknown command {} from chat {}\n", message->text, userID);
   }
 
-  typedef std::function<void(TgBot::Bot &, TgBot::Message::Ptr)> ptrProcessCommand;
+  using ptrProcessCommand = std::function<void(TgBot::Bot &, TgBot::Message::Ptr)>;
   
   std::unordered_map<std::string, ptrProcessCommand> mapCommands = 
   {
