@@ -24,6 +24,8 @@ namespace Bot
     bool userExists(int64_t username, int64_t group);
     bool addWin(int64_t username, int64_t group);
     bool getWinCount(int64_t username, int64_t group, int64_t &count);
+    std::unordered_map<int64_t, int64_t> getWinners(int64_t group, int32_t maxUsers);
+    
 
     std::vector<int64_t> getRegisteredGroupUsers(int64_t groupID);
 

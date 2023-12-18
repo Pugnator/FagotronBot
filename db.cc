@@ -23,6 +23,7 @@ namespace Bot
               SQLite::OPEN_FULLMUTEX);
       db->exec(SQL_OPTIONS);
       db->exec("CREATE TABLE IF NOT EXISTS User (ID INTEGER PRIMARY KEY AUTOINCREMENT, UserID INTEGER, GroupID INTEGER, WinnerCount INTEGER);");
+      db->exec("CREATE TABLE IF NOT EXISTS Group (ID INTEGER PRIMARY KEY AUTOINCREMENT, GroupID INTEGER, LastRun INTEGER, AutoRun INTEGER);");
     }
     catch (const SQLite::Exception &e)
     {
@@ -135,5 +136,26 @@ namespace Bot
       LOG_EXCEPTION("SQlite exception", e);
     }
     return false;
+  }
+
+  std::unordered_map<int64_t, int64_t> UserManager::getWinners(int64_t group, int32_t maxUsers)
+  {
+    try
+    {
+      SQLite::Statement query(*db, "SELECT UserID, WinnerCount FROM User WHERE GroupID = ? ORDER BY WinnerCount DESC LIMIT ?;");
+      query.bind(1, group);
+      query.bind(2, maxUsers);
+      std::unordered_map<int64_t, int64_t> winners;
+      while (query.executeStep())
+      {
+        winners[query.getColumn(0).getInt64()] = query.getColumn(1).getInt64();
+      }
+      return winners;
+    }
+    catch (const SQLite::Exception &e)
+    {
+      LOG_EXCEPTION("SQlite exception", e);
+    }
+    return {};
   }
 }

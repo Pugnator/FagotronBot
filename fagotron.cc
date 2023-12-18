@@ -41,10 +41,17 @@ int main()
   cmdArray->command = "register";
   cmdArray->description = "Register yourself as a Gym member.";
   commands.push_back(cmdArray);
-  cmdArray = std::make_shared<TgBot::BotCommand>();
-  commands.push_back(cmdArray);
+  cmdArray = std::make_shared<TgBot::BotCommand>();  
   cmdArray->command = "unregister";
-  cmdArray->description = "Leave the Gym.";
+  cmdArray->description = "Leave the Gym.";  
+  commands.push_back(cmdArray);
+  cmdArray = std::make_shared<TgBot::BotCommand>();
+  cmdArray->command = "stats";
+  cmdArray->description = "Best of the best.";
+  commands.push_back(cmdArray);
+  cmdArray = std::make_shared<TgBot::BotCommand>();
+  cmdArray->command = "mystats";
+  cmdArray->description = "Rate my fagotism.";
   commands.push_back(cmdArray);
   bot.getApi().setMyCommands(commands);
 

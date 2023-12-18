@@ -1,3 +1,5 @@
+#include <random>
+
 #include "fagotron.hpp"
 #include "log.hpp"
 
@@ -51,6 +53,32 @@ namespace
     }
   }
 
+  void statisticsCommand(TgBot::Bot &bot, TgBot::Message::Ptr message)
+  {
+    int64_t userID = message->from->id;
+    int64_t groupID = message->chat->id;
+    Bot::UserManager userManager(bot);
+    unsigned maxUsers = 10;
+    std::unordered_map<int64_t, int64_t> luckyGuys = userManager.getWinners(groupID, maxUsers);
+    std::string winners;
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    for (const auto &pair : luckyGuys)
+    {
+      int64_t userId = pair.first;
+      int64_t winCount = pair.second;
+      TgBot::Chat::Ptr chat = bot.getApi().getChat(userId);
+      std::vector<std::string> names = {chat->username, chat->firstName, chat->lastName};
+      std::erase_if(names, [](std::string const &s)
+                    { return s.empty(); });
+      std::uniform_int_distribution<> intName(0, names.size() - 1);
+      int nameId = intName(gen);
+      std::string username = names[nameId];
+      winners += std::format("{}: {} раз\n", username, winCount);
+    }
+    bot.getApi().sendMessage(groupID, winners);
+  }
+
   void unknownCommand(TgBot::Bot &bot, TgBot::Message::Ptr message)
   {
     int64_t userID = message->from->id;
@@ -60,18 +88,19 @@ namespace
   }
 
   typedef std::function<void(TgBot::Bot &, TgBot::Message::Ptr)> ptrProcessCommand;
-  
-  std::unordered_map<std::string, ptrProcessCommand> mapCommands = 
-  {
-    {"/play", playCommand},
-    {"/play@FagotronBot", playCommand},
-    {"/register", registerCommand},
-    {"/register@FagotronBot", registerCommand},
-    {"/unregister", unregisterCommand},
-    {"/unregister@FagotronBot", unregisterCommand},
+
+  std::unordered_map<std::string, ptrProcessCommand> mapCommands =
+      {
+          {"/play", playCommand},
+          {"/play@FagotronBot", playCommand},
+          {"/register", registerCommand},
+          {"/register@FagotronBot", registerCommand},
+          {"/unregister", unregisterCommand},
+          {"/unregister@FagotronBot", unregisterCommand},
+          {"/stats@FagotronBot", statisticsCommand},
   };
 
-  ptrProcessCommand getCommand(std::string& cmd)
+  ptrProcessCommand getCommand(std::string &cmd)
   {
     if (mapCommands.find(cmd) != mapCommands.end())
     {
