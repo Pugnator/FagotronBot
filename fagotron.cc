@@ -49,10 +49,10 @@ int main()
   cmdArray->command = "stats";
   cmdArray->description = "Best of the best.";
   commands.push_back(cmdArray);
-  cmdArray = std::make_shared<TgBot::BotCommand>();
-  cmdArray->command = "mystats";
-  cmdArray->description = "Rate my fagotism.";
-  commands.push_back(cmdArray);
+  //cmdArray = std::make_shared<TgBot::BotCommand>();
+  //cmdArray->command = "mystats";
+  //cmdArray->description = "Rate my fagotism.";
+  //commands.push_back(cmdArray);
   bot.getApi().setMyCommands(commands);
 
   bot.getEvents().onUnknownCommand([&bot](TgBot::Message::Ptr message)

@@ -63,6 +63,7 @@ namespace
     std::string winners;
     std::random_device rd;
     std::mt19937 gen(rd());
+    LOG_DEBUG("Found {} winners\n", luckyGuys.size());
     for (const auto &pair : luckyGuys)
     {
       int64_t userId = pair.first;
@@ -74,6 +75,7 @@ namespace
       std::uniform_int_distribution<> intName(0, names.size() - 1);
       int nameId = intName(gen);
       std::string username = names[nameId];
+      LOG_DEBUG("Winner {} has {} wins\n", username, winCount);
       winners += std::format("{}: {}\n", username, winCount);
     }
     bot.getApi().sendMessage(groupID, winners);
