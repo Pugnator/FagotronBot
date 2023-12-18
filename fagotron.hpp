@@ -9,6 +9,8 @@ namespace Bot
   void processCommands(TgBot::Bot &bot, TgBot::Message::Ptr message);
   void sentTextMessage(TgBot::Bot &bot, int64_t chatID, const std::string &message);
   void sendSticker(TgBot::Bot &bot, int64_t chatID, const std::string &stickerID);
+  std::vector<int64_t> getPossibleGroupUsers(TgBot::Bot &bot, int64_t groupID);
+
   class UserManager
   {
   public:
@@ -25,7 +27,6 @@ namespace Bot
     bool addWin(int64_t username, int64_t group);
     bool getWinCount(int64_t username, int64_t group, int64_t &count);
     std::unordered_map<int64_t, int64_t> getWinners(int64_t group, int32_t maxUsers);
-
     std::vector<int64_t> getRegisteredGroupUsers(int64_t groupID);
 
   private:

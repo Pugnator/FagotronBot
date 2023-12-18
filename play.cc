@@ -48,4 +48,9 @@ namespace Bot
 
     LOG_DEBUG("The winner is {}\n", winner);
   }
+
+  std::vector<int64_t> getPossibleGroupUsers(TgBot::Bot &bot, int64_t groupID)
+  {
+    TgBot::Chat::Ptr chat = bot.getApi().getChat(userId);
+  }
 }

@@ -166,5 +166,5 @@ namespace Bot
       LOG_EXCEPTION("SQlite exception", e);
     }
     return {};
-  }
+  }  
 }
