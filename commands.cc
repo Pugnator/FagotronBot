@@ -74,7 +74,7 @@ namespace
       std::uniform_int_distribution<> intName(0, names.size() - 1);
       int nameId = intName(gen);
       std::string username = names[nameId];
-      winners += std::format("{}: {} раз\n", username, winCount);
+      winners += std::format("{}: {}\n", username, winCount);
     }
     bot.getApi().sendMessage(groupID, winners);
   }
@@ -87,7 +87,7 @@ namespace
     LOG_DEBUG("Unknown command {} from chat {}\n", message->text, userID);
   }
 
-  typedef std::function<void(TgBot::Bot &, TgBot::Message::Ptr)> ptrProcessCommand;
+  using ptrProcessCommand = std::function<void(TgBot::Bot &, TgBot::Message::Ptr)>;
 
   std::unordered_map<std::string, ptrProcessCommand> mapCommands =
       {

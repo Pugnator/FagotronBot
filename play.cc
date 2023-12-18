@@ -30,11 +30,12 @@ namespace Bot
     TgBot::Chat::Ptr chat = bot.getApi().getChat(fags[winner]);
 
     std::vector<std::string> names = {chat->username, chat->firstName, chat->lastName};
-    std::erase_if(names, [](std::string const& s){ return s.empty(); });
+    std::erase_if(names, [](std::string const &s)
+                  { return s.empty(); });
     std::uniform_int_distribution<> intName(0, names.size() - 1);
     int nameId = intName(gen);
     std::string username = names[nameId];
-    
+
     std::string congratulations = Corpus::CorpusManager::get().getRandomEntry(Corpus::EntryType::Congratulations);
     sentTextMessage(bot, groupID, congratulations);
     std::string insult = Corpus::CorpusManager::get().getRandomEntry(Corpus::EntryType::Insults);
