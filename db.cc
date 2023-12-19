@@ -68,7 +68,7 @@ namespace Bot
     return false;
   }
 
-  bool UserManager::userExists(int64_t username, int64_t group)
+  bool UserManager::isUserAdded(int64_t username, int64_t group)
   {
     LOG_DEBUG("Checking if user {} exists in group {}\n", username, group);
     try

@@ -17,15 +17,15 @@ int main()
   Log::get().configure(TraceType::file).set_level(TraceSeverity::debug);
   LOG_INFO("Starting FAGOTRON\n");
 
-#if defined(WAKABOT_TOKEN)
-  LOG_DEBUG("WAKABOT_TOKEN is set: {}\n", WAKABOT_TOKEN);
-  TgBot::Bot bot(WAKABOT_TOKEN);
+#if defined(FAGOTRON_TOKEN)
+  LOG_DEBUG("FAGOTRON_TOKEN is set: {}\n", FAGOTRON_TOKEN);
+  TgBot::Bot bot(FAGOTRON_TOKEN);
 #else
-  LOG_DEBUG("WAKABOT_TOKEN is not set, trying to get it from environment\n");
-  const char *token = getenv("WAKABOT_TOKEN");
+  LOG_DEBUG("FAGOTRON_TOKEN is not set, trying to get it from environment\n");
+  const char *token = getenv("FAGOTRON_TOKEN");
   if (!token)
   {
-    LOG_DEBUG("WAKABOT_TOKEN is not set, exiting\n");
+    LOG_DEBUG("FAGOTRON_TOKEN is not set, exiting\n");
     return 1;
   }
   TgBot::Bot bot(token);

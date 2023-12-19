@@ -23,7 +23,7 @@ namespace Bot
 
     bool createUserEntry(int64_t username, int64_t group);
     bool removeUserEntry(int64_t username, int64_t group);
-    bool userExists(int64_t username, int64_t group);
+    bool isUserAdded(int64_t username, int64_t group);
     bool addWin(int64_t username, int64_t group);
     bool getWinCount(int64_t username, int64_t group, int64_t &count);
     std::unordered_map<int64_t, int64_t> getWinners(int64_t group, int32_t maxUsers);

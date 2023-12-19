@@ -51,6 +51,7 @@ namespace Bot
 
   std::vector<int64_t> getPossibleGroupUsers(TgBot::Bot &bot, int64_t groupID)
   {
-    TgBot::Chat::Ptr chat = bot.getApi().getChat(userId);
+    TgBot::Chat::Ptr chat = bot.getApi().getChat(groupID);
+    return std::vector<int64_t>();
   }
 }

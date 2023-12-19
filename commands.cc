@@ -10,6 +10,12 @@ namespace
     int64_t userID = message->from->id;
     int64_t groupID = message->chat->id;
     LOG_DEBUG("User {} wants to play a game of fag\n", userID);
+    Bot::UserManager userManager(bot);
+    if (!userManager.isUserAdded(userID, groupID))
+    {
+      bot.getApi().sendMessage(groupID, "Only real fag can run a game. You're not the one.");
+      return;
+    }
     Bot::playGameOfFag(bot, groupID);
   }
 
@@ -18,7 +24,7 @@ namespace
     int64_t userID = message->from->id;
     int64_t groupID = message->chat->id;
     Bot::UserManager userManager(bot);
-    if (userManager.userExists(userID, groupID))
+    if (userManager.isUserAdded(userID, groupID))
     {
       LOG_DEBUG("User {} is already a well-known fag.\n", userID);
       bot.getApi().sendMessage(groupID, "You are already a well-known fag.");
@@ -77,6 +83,10 @@ namespace
       std::string username = names[nameId];
       LOG_DEBUG("Winner {} has {} wins\n", username, winCount);
       winners += std::format("{}: {}\n", username, winCount);
+    }
+    if(winners.empty())
+    {
+      winners = "No winners yet";
     }
     bot.getApi().sendMessage(groupID, winners);
   }

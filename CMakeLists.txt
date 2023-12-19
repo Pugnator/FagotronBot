@@ -27,7 +27,7 @@ if(EXISTS "${CMAKE_SOURCE_DIR}/token.txt")
 else()
   set(TOKEN_CONTENT "EMPTY_TOKEN")
 endif()
-add_definitions(-DWAKABOT_TOKEN="${TOKEN_CONTENT}")
+add_definitions(-DFAGOTRON_TOKEN="${TOKEN_CONTENT}")
 
 set(BasicCorpusFile ${CMAKE_CURRENT_SOURCE_DIR}/corpus.yml)
 
